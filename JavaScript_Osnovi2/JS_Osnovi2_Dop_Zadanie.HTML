@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Калькулятор возраста</title>
+</head>
+<body>
+
+<h1>Калькулятор возраста</h1>
+
+<label for="birthdate">Выберите дату рождения:</label>
+<input type="date" id="birthdate">
+
+<button onclick="calculateAge()">Посчитать возраст</button>
+
+<p id="result"></p>
+
+<script>
+    function calculateAge() {
+        // Получаем выбранную дату рождения
+        const birthdateInput = document.getElementById('birthdate').value;
+
+        // Проверяем, что поле не пустое
+        if (!birthdateInput) {
+            document.getElementById('result').innerText = 'Ошибка: выберите дату рождения';
+            return; // Прерываем выполнение функции
+        }
+
+        // Преобразуем введенную дату в объект Date
+        const birthdate = new Date(birthdateInput);
+        // Получаем текущую дату
+        const today = new Date();
+
+        // Проверяем, что дата рождения не в будущем
+        if (birthdate > today) {
+            document.getElementById('result').innerText = 'Ошибка: дата рождения не может быть в будущем';
+            return;
+        }
+
+        // Вычисляем разницу в годах
+        let years = today.getFullYear() - birthdate.getFullYear();
+        // Вычисляем разницу в месяцах
+        let months = today.getMonth() - birthdate.getMonth();
+        // Вычисляем разницу в днях
+        let days = today.getDate() - birthdate.getDate();
+
+        // Корректируем месяцы и дни, если дни отрицательные
+        if (days < 0) {
+            months--; // Уменьшаем месяцы на 1
+            // Добавляем количество дней в предыдущем месяце
+            const lastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            days += lastMonth.getDate();
+        }
+
+        // Корректируем годы и месяцы, если месяцы отрицательные
+        if (months < 0) {
+            years--; // Уменьшаем годы на 1
+            months += 12; // Добавляем 12 месяцев
+        }
+
+        // Выводим результат
+        document.getElementById('result').innerText = 
+            `Ваш возраст: ${years} лет, ${months} месяцев, ${days} дней`;
+    }
+</script>
+
+</body>
+</html>
